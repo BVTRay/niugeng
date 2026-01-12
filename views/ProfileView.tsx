@@ -192,24 +192,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
 
       <div className="px-3 space-y-3">
          
-         {/* --- 3. Orders Card --- */}
-         <div className="bg-white rounded-xl p-4 shadow-sm">
-            <div className="flex justify-between items-center mb-4 border-b border-stone-50 pb-2">
-               <h3 className="font-serif font-bold text-stone-900">我的订单</h3>
-               <button onClick={() => onNavigate('orders')} className="flex items-center text-xs text-stone-400 hover:text-stone-600">
-                  全部订单 <ChevronRight size={12} />
-               </button>
-            </div>
-            <div className="grid grid-cols-5 gap-2">
-               <IconAction icon={CreditCard} label="待付款" />
-               <IconAction icon={Package} label="待发货" badge={isGuest ? undefined : "1"} />
-               <IconAction icon={Truck} label="待收货" />
-               <IconAction icon={MessageSquare} label="待评价" />
-               <IconAction icon={RefreshCcw} label="退款/售后" />
-            </div>
-         </div>
-
-         {/* --- 4. Interactions Card (Colorful & Centered) --- */}
+         {/* --- 3. Interactions Card (Colorful & Centered) --- */}
          <div className="bg-white rounded-xl p-4 shadow-sm">
             <div className="grid grid-cols-5 gap-1 items-start">
                <ColorIconAction 
@@ -248,6 +231,23 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
                   color="text-white"
                   bg="bg-gradient-to-br from-orange-400 to-orange-600"
                />
+            </div>
+         </div>
+
+         {/* --- 4. Orders Card --- */}
+         <div className="bg-white rounded-xl p-4 shadow-sm">
+            <div className="flex justify-between items-center mb-4 border-b border-stone-50 pb-2">
+               <h3 className="font-serif font-bold text-stone-900">我的订单</h3>
+               <button onClick={() => onNavigate('orders')} className="flex items-center text-xs text-stone-400 hover:text-stone-600">
+                  全部订单 <ChevronRight size={12} />
+               </button>
+            </div>
+            <div className="grid grid-cols-5 gap-2">
+               <IconAction icon={CreditCard} label="待付款" />
+               <IconAction icon={Package} label="待发货" badge={isGuest ? undefined : "1"} />
+               <IconAction icon={Truck} label="待收货" />
+               <IconAction icon={MessageSquare} label="待评价" />
+               <IconAction icon={RefreshCcw} label="退款/售后" />
             </div>
          </div>
 
