@@ -1,0 +1,7 @@
+{
+  "name": "牛耕部落 - 归野",
+  "description": "有机农业品牌会员专属服务平台，提供梯田民宿预订、有机农产品配送管理及溯源服务。",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
