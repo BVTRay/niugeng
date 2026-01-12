@@ -216,20 +216,20 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
                   icon={TicketPercent} 
                   label="优惠券" 
                   value={isGuest ? "0张" : "2张"}
-                  color="text-orange-500"
-                  bg="bg-orange-50"
+                  color="text-white"
+                  bg="bg-gradient-to-br from-orange-400 to-orange-600"
                />
                <ColorIconAction 
                   icon={Wheat} 
                   label="稻穗分" 
                   value={user.points.toString()} 
-                  color="text-yellow-600"
-                  bg="bg-yellow-50"
+                  color="text-white"
+                  bg="bg-gradient-to-br from-orange-400 to-orange-600"
                />
                
                {/* Center Exchange Button - Aligned */}
                <button className="flex flex-col items-center gap-1.5 py-1 relative active:scale-95 transition-transform group">
-                  <div className="w-10 h-10 bg-plough-green-900 text-white rounded-full flex items-center justify-center shadow-md shadow-plough-green-900/20 group-hover:scale-110 transition-transform">
+                  <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 text-white rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
                      <Gem size={20} />
                   </div>
                   <span className="text-xs font-bold text-stone-700">兑换中心</span>
@@ -239,14 +239,14 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
                   icon={Gift} 
                   label="邀请有礼" 
                   highlight 
-                  color="text-rose-500"
-                  bg="bg-rose-50"
+                  color="text-white"
+                  bg="bg-gradient-to-br from-orange-400 to-orange-600"
                />
                <ColorIconAction 
                   icon={ClipboardCheck} 
                   label="用户调研" 
-                  color="text-blue-500"
-                  bg="bg-blue-50"
+                  color="text-white"
+                  bg="bg-gradient-to-br from-orange-400 to-orange-600"
                />
             </div>
          </div>
@@ -338,8 +338,8 @@ const IconAction: React.FC<{ icon: any, label: string, badge?: string, value?: s
 // --- Sub Component: Colorful Icon Action ---
 const ColorIconAction: React.FC<{ icon: any, label: string, value?: string, highlight?: boolean, color: string, bg: string }> = ({ icon: Icon, label, value, highlight, color, bg }) => (
    <button className="flex flex-col items-center gap-1.5 py-1 relative active:scale-95 transition-transform group">
-      <div className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center transition-transform group-hover:scale-110`}>
-         <Icon size={20} className={color} strokeWidth={2} />
+      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center transition-transform group-hover:scale-110 shadow-sm">
+         <Icon size={20} className="text-white" strokeWidth={2} />
          {highlight && (
             <span className="absolute -top-1.5 -right-1 text-[8px] bg-red-500 text-white px-1.5 py-0.5 rounded-full shadow-sm scale-90 border border-white">
                有礼
