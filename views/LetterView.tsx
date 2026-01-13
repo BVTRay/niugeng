@@ -1,50 +1,7 @@
 
 import React from 'react';
-import { Send, Sprout, Utensils, Sun, Users, MapPin, ChevronRight, Calendar, Bell } from 'lucide-react';
+import { Send, Sprout, Utensils, Sun, Users, MapPin, Calendar } from 'lucide-react';
 import { BrandLogo } from '../components/BrandLogo';
-
-const EVENTS = [
-  {
-    id: 1,
-    month: 'MAY',
-    day: '01',
-    type: '溯源之旅',
-    title: '春耕节 · 秧苗插种',
-    desc: '邀请会员家庭亲手插秧，体验“汗滴禾下土”。',
-    color: 'bg-plough-green-50 text-plough-green-800',
-    iconColor: 'bg-plough-green-100'
-  },
-  {
-    id: 2,
-    month: 'OCT',
-    day: '01',
-    type: '溯源之旅',
-    title: '秋收节 · 稻谷归仓',
-    desc: '割稻谷、打谷子，吃长桌宴，喝拦门酒。',
-    color: 'bg-orange-50 text-orange-800',
-    iconColor: 'bg-orange-100'
-  },
-  {
-    id: 3,
-    month: 'SALON',
-    day: 'City',
-    type: '城市沙龙',
-    title: '有机生活品鉴会',
-    desc: '教大家怎么用有机米煮出一锅好粥，搭配养生食材。',
-    color: 'bg-stone-100 text-stone-800',
-    iconColor: 'bg-stone-200'
-  },
-  {
-    id: 4,
-    month: 'SALON',
-    day: 'City',
-    type: '城市沙龙',
-    title: '中医食疗讲座',
-    desc: '结合贵州大山药食同源概念，讲解节气养生。',
-    color: 'bg-teal-50 text-teal-800',
-    iconColor: 'bg-teal-100'
-  }
-];
 
 const LetterView: React.FC = () => {
   return (
@@ -54,53 +11,6 @@ const LetterView: React.FC = () => {
 
       <div className="flex-1 pb-20">
         
-        {/* NEW: Full-Width Horizontal Notification Bar */}
-        <div className="bg-white/60 backdrop-blur-md border-b border-white/40 pt-4 pb-4 shadow-sm relative z-20 mt-0 sticky top-0">
-           {/* Section Header */}
-           <div className="px-4 mb-3 flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                 <div className="bg-red-50 p-1 rounded-full animate-pulse">
-                    <Bell size={12} className="text-red-500" fill="currentColor" />
-                 </div>
-                 <h3 className="text-xs font-serif font-bold text-stone-800">活动通知</h3>
-              </div>
-              <span className="text-[10px] text-stone-400 font-serif italic pr-1">向左滑动查看更多</span>
-           </div>
-
-           {/* Horizontal Scroll Area */}
-           <div className="flex overflow-x-auto px-4 gap-3 no-scrollbar snap-x snap-mandatory">
-              {EVENTS.map((evt) => (
-                 <div key={evt.id} className="min-w-[85%] snap-center bg-white rounded-xl p-3 shadow-sm border border-stone-100 flex gap-3 relative overflow-hidden group">
-                    {/* Left Date/Icon Box */}
-                    <div className={`w-12 h-12 rounded-lg ${evt.color} flex flex-col items-center justify-center shrink-0 border border-black/5`}>
-                       <span className="text-[9px] font-bold uppercase tracking-tighter opacity-70">{evt.month}</span>
-                       <span className="text-sm font-serif font-bold leading-none">{evt.day}</span>
-                    </div>
-
-                    {/* Right Content */}
-                    <div className="flex-1 min-w-0 flex flex-col justify-center">
-                       <div className="flex items-center gap-2 mb-0.5">
-                          <span className={`text-[9px] px-1.5 py-0.5 rounded-sm ${evt.iconColor} ${evt.color.split(' ')[1]} font-bold`}>
-                             {evt.type}
-                          </span>
-                          <h4 className="text-sm font-serif font-bold text-stone-900 truncate">{evt.title}</h4>
-                       </div>
-                       <p className="text-[10px] text-stone-500 line-clamp-1 leading-relaxed">
-                          {evt.desc}
-                       </p>
-                    </div>
-                    
-                    {/* Arrow Indicator */}
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-300">
-                        <ChevronRight size={14} />
-                    </div>
-                 </div>
-              ))}
-              {/* Spacer for right padding */}
-              <div className="w-2 shrink-0"></div>
-           </div>
-        </div>
-
         {/* Paper Card (Original Letter) */}
         <div className="bg-[#FDFCF8] shadow-lg rounded-sm p-8 max-w-sm mx-auto min-h-[500px] relative mt-6 mb-6 animate-fade-in border border-[#e5e4df]">
           {/* Stamp/Logo */}

@@ -55,13 +55,13 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
                   onClick={() => onNavigate('membership-intro')}
                   className="relative group"
                >
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#EBC089] via-[#C99C63] to-[#8C6239] p-0.5 shadow-lg group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EBC089] via-[#C99C63] to-[#8C6239] p-0.5 shadow-md group-hover:scale-105 transition-transform">
                      <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
-                        <Crown size={24} className="text-[#8C6239]" fill="currentColor" />
+                        <Crown size={16} className="text-[#8C6239]" fill="currentColor" />
                      </div>
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-plough-green-600 rounded-full border-2 border-white flex items-center justify-center">
-                     <ChevronRight size={10} className="text-white" />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-plough-green-600 rounded-full border-2 border-white flex items-center justify-center shadow-sm">
+                     <ChevronRight size={8} className="text-white" />
                   </div>
                </button>
             )}

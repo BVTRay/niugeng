@@ -6,6 +6,7 @@ import { BrandLogo } from '../components/BrandLogo';
 interface MembershipPaymentViewProps {
   initialTierId?: 'granary' | 'homestead';
   onBack: () => void;
+  isTabView?: boolean; // 是否作为tab页面显示（不显示返回按钮）
 }
 
 // Icons not in Lucide
@@ -133,7 +134,7 @@ const PLANS = {
   }
 };
 
-const MembershipPaymentView: React.FC<MembershipPaymentViewProps> = ({ initialTierId = 'homestead', onBack }) => {
+const MembershipPaymentView: React.FC<MembershipPaymentViewProps> = ({ initialTierId = 'homestead', onBack, isTabView = false }) => {
   const [activeTierId, setActiveTierId] = useState<'granary' | 'homestead'>(initialTierId);
   const [selectedOptionId, setSelectedOptionId] = useState<string>(
      initialTierId === 'granary' ? 'g-year' : 'h-year'
@@ -150,21 +151,62 @@ const MembershipPaymentView: React.FC<MembershipPaymentViewProps> = ({ initialTi
       <div className="min-h-screen bg-[#F5F5F4] animate-fade-in font-sans flex flex-col relative">
         
         {/* Header */}
-        <div className="bg-white px-4 py-4 sticky top-0 z-30 flex items-center gap-4 shadow-sm">
-           <button onClick={onBack} className="p-1 rounded-full hover:bg-stone-100">
-              <ArrowLeft size={24} className="text-stone-800" strokeWidth={1.5} />
-           </button>
-           <h1 className="font-serif font-bold text-lg text-stone-900 flex-1 text-center pr-8">购卡续费</h1>
-           <button className="p-1 rounded-full hover:bg-stone-100">
-              <Share2 size={20} className="text-stone-600" />
-           </button>
-        </div>
+        {!isTabView && (
+          <div className="bg-white px-4 py-4 sticky top-0 z-30 flex items-center gap-4 shadow-sm">
+             <button onClick={onBack} className="p-1 rounded-full hover:bg-stone-100">
+                <ArrowLeft size={24} className="text-stone-800" strokeWidth={1.5} />
+             </button>
+             <h1 className="font-serif font-bold text-lg text-stone-900 flex-1 text-center pr-8">购卡续费</h1>
+             <button className="p-1 rounded-full hover:bg-stone-100">
+                <Share2 size={20} className="text-stone-600" />
+             </button>
+          </div>
+        )}
 
-        <div className="flex-1 overflow-y-auto pb-32">
+        <div className="flex-1 overflow-y-auto pb-32" style={{ paddingBottom: isTabView ? '140px' : '100px' }}>
          
-         {/* 1. Benefits Pool - 权益池 */}
-         <div className="px-4 pt-6 pb-4">
-            <div className="bg-white rounded-2xl p-4 shadow-sm">
+         {/* Promotional Banner - 推广海报区域（仅tab页面显示） */}
+         {isTabView && (
+            <div className="relative w-full mb-0">
+               {/* 海报头图 - 纯色区域设计 */}
+               <div className="relative w-full h-72 overflow-hidden">
+                  {/* 纯色渐变背景 */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-plough-green-700 via-plough-green-800 to-plough-green-900">
+                     {/* 装饰性圆形元素 */}
+                     <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+                     <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-white/3 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                  </div>
+                  
+                  {/* 文字内容 - 居中布局 */}
+                  <div className="relative z-10 h-full flex flex-col justify-center items-center px-6 text-white text-center">
+                     <div className="flex items-center justify-center gap-3 mb-5">
+                        <Crown size={32} className="text-yellow-300" fill="currentColor" />
+                        <h2 className="text-3xl font-serif font-bold leading-tight">成为梯田守护人</h2>
+                     </div>
+                     
+                     <div className="w-16 h-px bg-white/30 mb-5"></div>
+                     
+                     <p className="text-base text-white/95 mb-4 leading-relaxed font-serif max-w-md">
+                        尊享专属权益，开启有机生活新篇章
+                     </p>
+                     
+                     <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-white/80 font-serif">
+                        <span className="px-3 py-1 bg-white/10 rounded-full backdrop-blur-sm">每月有机米配送</span>
+                        <span className="px-3 py-1 bg-white/10 rounded-full backdrop-blur-sm">顺时而食指南</span>
+                        <span className="px-3 py-1 bg-white/10 rounded-full backdrop-blur-sm">大山惊喜盲盒</span>
+                     </div>
+                  </div>
+                  
+                  {/* 底部渐变过渡 */}
+                  <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-b from-transparent to-white pointer-events-none"></div>
+               </div>
+            </div>
+         )}
+         
+         {/* 1. Benefits Pool - 权益池（覆盖头图一部分） */}
+         <div className={`px-4 ${isTabView ? '-mt-16 relative z-20' : 'pt-6'} pb-4`}>
+            <div className="bg-white rounded-2xl p-4 shadow-lg border border-stone-100">
                <h3 className="text-xs font-bold text-stone-500 mb-3 uppercase tracking-wider">专享权益</h3>
                <div className="grid grid-cols-5 gap-4">
                   {ALL_BENEFITS.map((benefit) => {
@@ -186,9 +228,10 @@ const MembershipPaymentView: React.FC<MembershipPaymentViewProps> = ({ initialTi
             </div>
          </div>
 
-         {/* 2. Tabs - 标签 */}
+         {/* 会员卡片 - 包含标签、基础权益、付款方式、开卡活动、协议 */}
          <div className="px-4 mb-4">
-            <div className="bg-white rounded-xl overflow-hidden shadow-sm">
+            <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-stone-100">
+               {/* 1. 卡名标签 */}
                <div className="flex border-b border-stone-100">
                   <button 
                      onClick={() => setActiveTierId('homestead')}
@@ -205,113 +248,108 @@ const MembershipPaymentView: React.FC<MembershipPaymentViewProps> = ({ initialTi
                      {isGranary && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-1 bg-[#B8860B] rounded-t-full"></div>}
                   </button>
                </div>
-            </div>
-         </div>
 
-         {/* 3. Core Benefit - 基础权益 */}
-         <div className="px-4 mb-4">
-            <div className={`rounded-xl p-4 ${isGranary ? 'bg-gradient-to-br from-[#2A1A05] to-[#1a1000] border border-[#EBC089]/20' : 'bg-[#1a2e25] border border-plough-green-800/50'}`}>
-               <div className="flex gap-4">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${isGranary ? 'bg-[#4A3010] border border-[#EBC089]/30' : 'bg-plough-green-900 border border-plough-green-700'}`}>
-                     <Sprout size={24} className={isGranary ? 'text-[#EBC089]' : 'text-plough-green-400'} />
+               <div className="p-5">
+                  {/* 2. 基础权益 - 无背景色 */}
+                  <div className="flex gap-4 mb-6">
+                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${isGranary ? 'bg-[#FFFBF0] border border-[#EBC089]/30' : 'bg-plough-green-50 border border-plough-green-200'}`}>
+                        <Sprout size={24} className={isGranary ? 'text-[#B8860B]' : 'text-plough-green-700'} />
+                     </div>
+                     <div className="flex-1">
+                        <h3 className={`text-sm font-bold mb-1 ${isGranary ? 'text-[#B8860B]' : 'text-plough-green-900'}`}>
+                           {activeTier.coreBenefit}
+                        </h3>
+                        <p className={`text-xs leading-relaxed ${isGranary ? 'text-stone-600' : 'text-stone-600'}`}>
+                           {activeTier.coreBenefitDesc}
+                        </p>
+                     </div>
                   </div>
-                  <div className="flex-1">
-                     <h3 className={`text-sm font-bold mb-1 ${isGranary ? 'text-[#EBC089]' : 'text-white'}`}>
-                        {activeTier.coreBenefit}
-                     </h3>
-                     <p className={`text-xs leading-relaxed ${isGranary ? 'text-[#EBC089]/70' : 'text-stone-400'}`}>
-                        {activeTier.coreBenefitDesc}
-                     </p>
-                  </div>
-               </div>
-            </div>
-         </div>
 
-         {/* 4. Payment Options - 付款方式 */}
-         <div className="px-4 mb-4">
-            <div className="bg-white rounded-xl p-5 shadow-sm">
-               <div className="grid grid-cols-2 gap-3">
-                  {activeTier.options.map((option) => {
-                     const isSelected = selectedOptionId === option.id;
-                     const borderColor = isSelected 
-                        ? (isGranary ? 'border-[#B8860B] bg-[#FFFBF0]' : 'border-plough-green-600 bg-plough-green-50') 
-                        : 'border-stone-200';
-                     
-                     return (
-                        <div 
-                           key={option.id}
-                           onClick={() => setSelectedOptionId(option.id)}
-                           className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${borderColor}`}
-                        >
-                           {option.recommend && (
-                              <div className="absolute -top-2.5 left-0 right-0 text-center">
-                                 <span className={`text-[10px] text-white px-2 py-0.5 rounded-full ${isGranary ? 'bg-[#B8860B]' : 'bg-red-500'}`}>
-                                    推荐
-                                 </span>
-                              </div>
-                           )}
-                           
-                           <h3 className="font-bold text-stone-800 text-sm mb-1">{option.label}</h3>
-                           <p className="text-[10px] text-stone-400 mb-3">{option.duration}</p>
-                           
-                           <div className="flex items-baseline gap-0.5">
-                              <span className={`text-sm font-bold ${activeTier.themeColor}`}>¥</span>
-                              <span className={`text-2xl font-serif font-bold ${activeTier.themeColor}`}>{option.price}</span>
-                           </div>
-                           <p className="text-[10px] text-stone-400 line-through mt-0.5">原价 ¥{option.original}</p>
-                           
-                           <div className="flex items-center gap-1 mt-2">
-                              <span className={`text-[9px] px-1 py-0.5 rounded border ${isGranary ? 'border-[#EBC089]/30 text-[#EBC089]' : 'border-plough-green-500/30 text-plough-green-400'}`}>
-                                 立省¥{option.save}
-                              </span>
-                              <span className="text-[9px] text-stone-400">{option.discount}</span>
-                           </div>
-                        </div>
-                     );
-                  })}
-               </div>
-
-               {/* Opening Activities - 开卡活动区域 */}
-               <div className={`mt-6 rounded-xl p-4 ${isGranary ? 'bg-[#FFFBF0] border border-[#EBC089]/20' : 'bg-plough-green-50/50 border border-plough-green-200'}`}>
-                  <div className="flex items-center gap-2 mb-4">
-                     <Award size={16} className={isGranary ? 'text-[#B8860B]' : 'text-plough-green-700'} />
-                     <span className={`text-sm font-bold ${isGranary ? 'text-[#B8860B]' : 'text-plough-green-800'}`}>
-                        开卡活动
-                     </span>
-                     <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-500 text-white font-bold">限时</span>
-                  </div>
-                  
-                  <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
-                     {OPENING_ACTIVITIES[activeTierId].map((activity, index) => {
-                        const Icon = activity.icon;
+                  {/* 3. 付款方式 - 小卡片 */}
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                     {activeTier.options.map((option) => {
+                        const isSelected = selectedOptionId === option.id;
+                        const borderColor = isSelected 
+                           ? (isGranary ? 'border-[#B8860B] bg-[#FFFBF0]' : 'border-plough-green-600 bg-plough-green-50') 
+                           : 'border-stone-200';
+                        
                         return (
                            <div 
-                              key={index}
-                              className={`flex-shrink-0 w-28 aspect-square rounded-xl p-3 flex flex-col items-center justify-between ${isGranary ? 'bg-white/50 border border-[#EBC089]/20' : 'bg-white border border-plough-green-200'}`}
+                              key={option.id}
+                              onClick={() => setSelectedOptionId(option.id)}
+                              className={`relative rounded-xl border-2 p-4 cursor-pointer transition-all ${borderColor}`}
                            >
-                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isGranary ? 'bg-[#EBC089]/20 text-[#B8860B]' : 'bg-plough-green-100 text-plough-green-700'}`}>
-                                 <Icon size={24} strokeWidth={2} />
+                              {option.recommend && (
+                                 <div className="absolute -top-2.5 left-0 right-0 text-center">
+                                    <span className={`text-[10px] text-white px-2 py-0.5 rounded-full ${isGranary ? 'bg-[#B8860B]' : 'bg-red-500'}`}>
+                                      推荐
+                                    </span>
+                                 </div>
+                              )}
+                              
+                              <h3 className="font-bold text-stone-800 text-sm mb-1">{option.label}</h3>
+                              <p className="text-[10px] text-stone-400 mb-3">{option.duration}</p>
+                              
+                              <div className="flex items-baseline gap-0.5">
+                                 <span className={`text-sm font-bold ${activeTier.themeColor}`}>¥</span>
+                                 <span className={`text-2xl font-serif font-bold ${activeTier.themeColor}`}>{option.price}</span>
                               </div>
-                              <div className="flex-1 flex flex-col items-center justify-center text-center w-full">
-                                 <span className="text-[10px] font-bold text-stone-800 mb-1 leading-tight">{activity.label}</span>
-                                 <span className={`text-xs font-bold mb-1 ${isGranary ? 'text-[#B8860B]' : 'text-plough-green-700'}`}>
-                                    {activity.value}
+                              <p className="text-[10px] text-stone-400 line-through mt-0.5">原价 ¥{option.original}</p>
+                              
+                              <div className="flex items-center gap-1 mt-2">
+                                 <span className={`text-[9px] px-1 py-0.5 rounded border ${isGranary ? 'border-[#EBC089]/30 text-[#EBC089]' : 'border-plough-green-500/30 text-plough-green-400'}`}>
+                                   立省¥{option.save}
                                  </span>
-                                 <p className="text-[9px] text-stone-500 leading-tight line-clamp-2">{activity.desc}</p>
+                                 <span className="text-[9px] text-stone-400">{option.discount}</span>
                               </div>
                            </div>
                         );
                      })}
                   </div>
-               </div>
 
-               <div className="mt-4 flex items-start gap-2">
-                  <div className="mt-0.5 w-3 h-3 rounded-full border border-stone-300 flex items-center justify-center shrink-0">
-                     <div className="w-1.5 h-1.5 rounded-full bg-stone-300"></div>
+                  {/* 4. 开卡活动 - 卡片 */}
+                  <div className={`mb-6 rounded-xl p-4 ${isGranary ? 'bg-[#FFFBF0] border border-[#EBC089]/20' : 'bg-plough-green-50/50 border border-plough-green-200'}`}>
+                     <div className="flex items-center gap-2 mb-4">
+                        <Award size={16} className={isGranary ? 'text-[#B8860B]' : 'text-plough-green-700'} />
+                        <span className={`text-sm font-bold ${isGranary ? 'text-[#B8860B]' : 'text-plough-green-800'}`}>
+                           开卡活动
+                        </span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-500 text-white font-bold">限时</span>
+                     </div>
+                     
+                     <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+                        {OPENING_ACTIVITIES[activeTierId].map((activity, index) => {
+                           const Icon = activity.icon;
+                           return (
+                              <div 
+                                 key={index}
+                                 className={`flex-shrink-0 w-28 aspect-square rounded-xl p-3 flex flex-col items-center justify-between ${isGranary ? 'bg-white/50 border border-[#EBC089]/20' : 'bg-white border border-plough-green-200'}`}
+                              >
+                                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isGranary ? 'bg-[#EBC089]/20 text-[#B8860B]' : 'bg-plough-green-100 text-plough-green-700'}`}>
+                                    <Icon size={24} strokeWidth={2} />
+                                 </div>
+                                 <div className="flex-1 flex flex-col items-center justify-center text-center w-full">
+                                    <span className="text-[10px] font-bold text-stone-800 mb-1 leading-tight">{activity.label}</span>
+                                    <span className={`text-xs font-bold mb-1 ${isGranary ? 'text-[#B8860B]' : 'text-plough-green-700'}`}>
+                                       {activity.value}
+                                    </span>
+                                    <p className="text-[9px] text-stone-500 leading-tight line-clamp-2">{activity.desc}</p>
+                                 </div>
+                              </div>
+                           );
+                        })}
+                     </div>
                   </div>
-                  <p className="text-[10px] text-stone-400 leading-tight">
-                     同意《牛耕部落会员服务协议》及《自动续费协议》。到期前1天自动扣费，可随时取消。
-                  </p>
+
+                  {/* 5. 签署协议文字 */}
+                  <div className="flex items-start gap-2">
+                     <div className="mt-0.5 w-3 h-3 rounded-full border border-stone-300 flex items-center justify-center shrink-0">
+                        <div className="w-1.5 h-1.5 rounded-full bg-stone-300"></div>
+                     </div>
+                     <p className="text-[10px] text-stone-400 leading-tight">
+                        同意《牛耕部落会员服务协议》及《自动续费协议》。到期前1天自动扣费，可随时取消。
+                     </p>
+                  </div>
                </div>
             </div>
          </div>
@@ -319,8 +357,8 @@ const MembershipPaymentView: React.FC<MembershipPaymentViewProps> = ({ initialTi
         </div>
       </div>
 
-      {/* Bottom Action Bar - 立即购买按钮 - Fixed outside scroll container */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-stone-100 p-3 pb-safe z-[100] shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.05)]" style={{ maxWidth: '448px', margin: '0 auto' }}>
+      {/* Bottom Action Bar - 立即购买按钮 - Fixed above TabBar (tab页面) or at bottom (其他页面) */}
+      <div className="fixed left-0 right-0 bg-white border-t border-stone-100 p-3 pb-safe z-[100] shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.05)]" style={{ maxWidth: '448px', margin: '0 auto', bottom: isTabView ? '66px' : '0' }}>
          <div className="flex gap-3">
             <div className="flex-1 bg-stone-900 rounded-full flex items-center justify-between px-6 py-3 text-white">
                <span className="text-sm">支付 <span className="font-bold text-lg">¥ {selectedOption.price}</span></span>

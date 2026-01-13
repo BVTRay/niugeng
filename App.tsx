@@ -181,7 +181,7 @@ export default function App() {
               <>
                 {viewState.tab === 'home' && <HomeView user={user} setActiveTab={handleTabChange} onNavigate={navigateToDetail} />}
                 {viewState.tab === 'market' && <MarketView onNavigate={navigateToDetail} />}
-                {viewState.tab === 'letter' && <LetterView />}
+                {viewState.tab === 'letter' && <MembershipPaymentView initialTierId="homestead" onBack={() => {}} isTabView={true} />}
                 {viewState.tab === 'homestay' && <HomestayView onNavigate={navigateToDetail} />}
                 {viewState.tab === 'profile' && <ProfileView user={user} onNavigate={navigateToDetail} />}
               </>
