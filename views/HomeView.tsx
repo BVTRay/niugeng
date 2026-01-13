@@ -2,7 +2,7 @@
 import React from 'react';
 import { User, TabType } from '../types';
 import { MOCK_FIELD_NOTES, MONTHLY_RICE_DATA } from '../constants';
-import { Wind, Droplets, ArrowUpRight, Leaf, CloudSun, Calendar, Utensils, Sun, Sparkles, Video, ScanLine, Crown, ChevronRight } from 'lucide-react';
+import { Wind, Droplets, ArrowUpRight, Leaf, CloudSun, Calendar, Utensils, Sun, Sparkles, Video, ScanLine, Crown, ChevronRight, MapPin, Thermometer } from 'lucide-react';
 import { BrandLogo, TerracePattern } from '../components/BrandLogo';
 
 interface HomeViewProps {
@@ -30,53 +30,42 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
         </div>
       </div>
 
-      {/* Greeting & Membership Section */}
-      <div className="px-6 mt-8 mb-8">
-         <div className="flex justify-between items-end">
-            <div>
-               <p className="text-xs text-stone-400 font-serif italic mb-2">Dec 26 · 立夏</p>
-               <h1 className="text-3xl font-serif font-bold text-stone-900 leading-tight">
-                 早安，{user.name}
-               </h1>
-            </div>
-            
-            {/* Membership Center Entry */}
-            {user.level === '未开通权益' ? (
-               <button 
-                  onClick={() => onNavigate('membership-intro')}
-                  className="bg-gradient-to-br from-plough-green-600 to-plough-green-700 text-white px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2"
-               >
-                  <Crown size={16} className="text-[#EBC089]" fill="currentColor" />
-                  <span className="text-sm font-bold">开通会员</span>
-                  <ChevronRight size={14} />
-               </button>
-            ) : (
-               <button 
-                  onClick={() => onNavigate('membership-intro')}
-                  className="relative group"
-               >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EBC089] via-[#C99C63] to-[#8C6239] p-0.5 shadow-md group-hover:scale-105 transition-transform">
-                     <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
-                        <Crown size={16} className="text-[#8C6239]" fill="currentColor" />
-                     </div>
-                  </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-plough-green-600 rounded-full border-2 border-white flex items-center justify-center shadow-sm">
-                     <ChevronRight size={8} className="text-white" />
-                  </div>
-               </button>
-            )}
+      {/* Greeting Section */}
+      <div className="px-6 mt-6 mb-6">
+         <div>
+            <p className="text-xs text-stone-400 font-serif italic mb-1.5">Dec 26 · 立夏</p>
+            <h1 className="text-xl font-serif font-bold text-stone-900 leading-tight">
+              早安，{user.name}
+            </h1>
          </div>
-         {/* Decorative Line */}
-         <div className="w-full h-px bg-gradient-to-r from-transparent via-stone-200 to-transparent mt-6 mb-2"></div>
+      </div>
+
+      {/* Promotional Poster - 牛耕部落介绍海报 */}
+      <div className="w-full mb-6">
+         <div 
+            className="w-full bg-cover bg-center"
+            style={{
+               aspectRatio: '1/1',
+               backgroundImage: 'url(https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=1200)',
+               backgroundPosition: 'center'
+            }}
+         >
+            {/* 渐变遮罩 */}
+            <div className="w-full h-full bg-gradient-to-b from-black/40 via-black/20 to-transparent flex flex-col justify-end p-6">
+               <div className="text-white">
+                  <h3 className="text-lg font-serif font-bold mb-2">牛耕部落</h3>
+                  <p className="text-xs text-white/90 leading-relaxed font-serif">
+                     完整保存并复兴"牛耕+稻鱼鸭共生"系统<br/>
+                     遵循德米特(Demeter)有机标准<br/>
+                     守护千年梯田智慧
+                  </p>
+               </div>
+            </div>
+         </div>
       </div>
 
       {/* Section 1: Field Notes (田野手记) */}
       <div className="mb-10">
-         <div className="px-6 flex justify-between items-end mb-5">
-            <h2 className="text-xl font-serif font-bold text-stone-900">田野手记</h2>
-            <span className="text-xs font-serif text-stone-400 italic">Field Notes</span>
-         </div>
-         
          <div className="flex overflow-x-auto px-6 gap-4 pb-4 no-scrollbar snap-x snap-mandatory">
             {MOCK_FIELD_NOTES.slice(0, 2).map((note, index) => (
                <div 
@@ -106,10 +95,6 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
 
       {/* Section 2: Seasonal Delivery (当季配送) */}
       <div className="px-6 mb-10">
-         <div className="flex justify-between items-end mb-4">
-            <h2 className="text-xl font-serif font-bold text-stone-900">当季配送</h2>
-         </div>
-
          <div className="bg-plough-green-900 rounded-[2rem] p-6 relative overflow-hidden shadow-xl shadow-plough-green-900/20 text-white group cursor-pointer" onClick={() => setActiveTab('profile')}>
             <TerracePattern className="text-white" opacity="0.05" />
             
@@ -149,74 +134,45 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
          </div>
       </div>
 
-      {/* Section 3: Farm Live (农场实况) - UPDATED */}
+      {/* Section 3: Farm Status Card (农场实况卡片) */}
       <div className="px-6 mb-6">
-         <div className="flex justify-between items-center mb-5">
-            <h2 className="text-xl font-serif font-bold text-stone-900">农场实况</h2>
-            <div className="flex items-center gap-1.5 bg-red-50 px-2 py-0.5 rounded-full border border-red-100">
-               <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-               <span className="text-[9px] font-bold tracking-widest uppercase text-red-600">LIVE MONITOR</span>
-            </div>
-         </div>
-
-         <div className="space-y-3">
-            {/* Live Camera Feed Card */}
-            <div className="w-full h-48 bg-stone-900 rounded-2xl relative overflow-hidden group shadow-md cursor-pointer border border-stone-200">
-               {/* Video Image Placeholder */}
-               <img 
-                 src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=1200" 
-                 alt="Farm CCTV" 
-                 className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" 
-               />
-               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"></div>
-               
-               {/* Camera UI Overlay */}
-               <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-                   <div className="flex flex-col text-shadow">
-                       <span className="text-[10px] text-white/70 font-mono flex items-center gap-1"><Video size={10}/> CAM_01</span>
-                       <span className="text-xs font-bold text-white font-sans tracking-wide">A区 · 核心保护梯田</span>
-                   </div>
-                   <div className="bg-black/30 backdrop-blur-md px-2 py-1 rounded-md border border-white/10 flex items-center gap-1.5">
-                       <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></div>
-                       <span className="text-[10px] text-white/90 font-mono tracking-widest">REC 00:04:23</span>
-                   </div>
-               </div>
-               
-               {/* Center Play Button Cue */}
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30 group-hover:bg-white/30 transition-colors">
-                  <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-white border-b-[6px] border-b-transparent ml-1"></div>
-               </div>
-
-               {/* AI Detection Overlay */}
-               <div className="absolute bottom-4 left-4">
-                  <div className="flex items-center gap-2">
-                     <span className="text-[10px] text-plough-green-200 bg-plough-green-900/80 px-1.5 py-0.5 rounded backdrop-blur-md flex items-center gap-1 border border-plough-green-800/50">
-                        <ScanLine size={10} /> AI 识别中
-                     </span>
-                     <span className="text-[10px] text-white/80 font-mono tracking-wider">
-                        Target: Buffalo (98%)
-                     </span>
+         <div className="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
+            {/* 数据网格 */}
+            <div className="grid grid-cols-2 gap-4">
+               {/* 地理位置 */}
+               <div className="flex items-center gap-3">
+                  <MapPin size={24} className="text-plough-green-700" strokeWidth={1.5} />
+                  <div>
+                     <p className="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">地理位置</p>
+                     <p className="text-base font-serif font-bold text-stone-900">贵州黎平</p>
                   </div>
                </div>
-            </div>
 
-            {/* Environmental Data Grid */}
-            <div className="grid grid-cols-2 gap-3">
-               <div className="bg-white border border-stone-100 p-4 rounded-2xl flex flex-col items-center justify-center gap-1 shadow-sm relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                     <Wind size={40} />
+               {/* 气温 */}
+               <div className="flex items-center gap-3">
+                  <Thermometer size={24} className="text-orange-600" strokeWidth={1.5} />
+                  <div>
+                     <p className="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">气温</p>
+                     <p className="text-base font-serif font-bold text-stone-900">22°C</p>
                   </div>
-                  <Wind size={20} className="text-plough-green-600 mb-1" strokeWidth={1.5} />
-                  <span className="text-2xl font-serif font-bold text-stone-800">优</span>
-                  <span className="text-[10px] text-stone-400 uppercase tracking-wider font-medium">空气质量 (AQI)</span>
                </div>
-               <div className="bg-white border border-stone-100 p-4 rounded-2xl flex flex-col items-center justify-center gap-1 shadow-sm relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                     <Droplets size={40} />
+
+               {/* 空气质量 */}
+               <div className="flex items-center gap-3">
+                  <Wind size={24} className="text-blue-600" strokeWidth={1.5} />
+                  <div>
+                     <p className="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">空气质量 (AQI)</p>
+                     <p className="text-base font-serif font-bold text-stone-900">优</p>
                   </div>
-                  <Droplets size={20} className="text-plough-green-600 mb-1" strokeWidth={1.5} />
-                  <span className="text-2xl font-serif font-bold text-stone-800">65%</span>
-                  <span className="text-[10px] text-stone-400 uppercase tracking-wider font-medium">相对湿度</span>
+               </div>
+
+               {/* 湿度 */}
+               <div className="flex items-center gap-3">
+                  <Droplets size={24} className="text-cyan-600" strokeWidth={1.5} />
+                  <div>
+                     <p className="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">相对湿度</p>
+                     <p className="text-base font-serif font-bold text-stone-900">65%</p>
+                  </div>
                </div>
             </div>
          </div>
