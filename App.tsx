@@ -12,9 +12,14 @@ import SettingsView from './views/SettingsView';
 import NotificationSettingsView from './views/NotificationSettingsView';
 import MessageCenterView from './views/MessageCenterView'; 
 import CustomerServiceView from './views/CustomerServiceView'; 
-import MembershipIntroView from './views/MembershipIntroView'; 
-import MembershipPaymentView from './views/MembershipPaymentView'; // Import
+import MembershipPaymentView from './views/MembershipPaymentView';
 import GuardianCertificateView from './views/GuardianCertificateView'; // Import
+import AddressView from './views/AddressView'; // Import
+import ExchangeCenterView from './views/ExchangeCenterView'; // Import
+import InviteRewardView from './views/InviteRewardView'; // Import
+import SurveyView from './views/SurveyView'; // Import
+import CouponView from './views/CouponView'; // Import
+import PointsView from './views/PointsView'; // Import
 import { NoteDetail, ProductDetail, RoomDetail, OrderList, BenefitDetail } from './views/SecondaryViews';
 import { MOCK_USER, MOCK_GUEST } from './constants';
 import { TabType, ViewState, User } from './types';
@@ -64,6 +69,9 @@ export default function App() {
       case 'customer-service':
         setViewState({ type: 'customer-service' });
         break;
+      case 'address':
+        setViewState({ type: 'address' });
+        break;
       case 'account-security':
         // Determine origin for back navigation
         const fromAccount = viewState.type === 'settings' ? 'settings' : 'profile';
@@ -74,18 +82,31 @@ export default function App() {
         setViewState({ type: 'notification-settings', from: fromNotif });
         break;
       case 'membership-intro':
-        // Pass the current tab as the 'from' state or default to profile
-        const source = viewState.type === 'main' ? viewState.tab : 'profile';
-        setViewState({ type: 'membership-intro', from: source });
-        break;
       case 'membership-payment-granary':
-        setViewState({ type: 'membership-payment', tierId: 'granary' });
-        break;
       case 'membership-payment-homestead':
-        setViewState({ type: 'membership-payment', tierId: 'homestead' });
+        // All membership navigation goes to payment page
+        const tierId: 'granary' | 'homestead' = type === 'membership-payment-granary' ? 'granary' : 
+                      type === 'membership-payment-homestead' ? 'homestead' : 
+                      'homestead';
+        setViewState({ type: 'membership-payment', tierId });
         break;
       case 'certificate':
         setViewState({ type: 'certificate' });
+        break;
+      case 'exchange-center':
+        setViewState({ type: 'exchange-center' });
+        break;
+      case 'invite-reward':
+        setViewState({ type: 'invite-reward' });
+        break;
+      case 'survey':
+        setViewState({ type: 'survey' });
+        break;
+      case 'coupon':
+        setViewState({ type: 'coupon' });
+        break;
+      case 'points':
+        setViewState({ type: 'points' });
         break;
     }
   };
@@ -113,13 +134,18 @@ export default function App() {
          } else {
             setViewState({ type: 'settings' });
          }
-      } else if (viewState.type === 'membership-intro') {
-         setViewState({ type: 'main', tab: viewState.from as TabType });
       } else if (viewState.type === 'membership-payment') {
-         // Back from payment goes to intro
-         setViewState({ type: 'membership-intro', from: 'profile' });
+         setViewState({ type: 'main', tab: 'profile' });
       } else if (viewState.type === 'certificate') {
          setViewState({ type: 'main', tab: 'profile' });
+      } else if (viewState.type === 'exchange-center') {
+         setViewState({ type: 'main', tab: 'profile' });
+      } else if (viewState.type === 'invite-reward') {
+         setViewState({ type: 'main', tab: 'profile' });
+      } else if (viewState.type === 'survey') {
+        setViewState({ type: 'main', tab: 'home' });
+      } else if (viewState.type === 'coupon' || viewState.type === 'points') {
+        setViewState({ type: 'main', tab: 'profile' });
       } else {
          goBackToMain();
       }
@@ -173,8 +199,8 @@ export default function App() {
             {viewState.type === 'settings' && (
                <SettingsView 
                   onBack={() => handleTabChange('profile')} 
-                  onNavigateToAccount={() => navigateToDetail('account-security')} 
-                  onNavigateToNotifications={() => navigateToDetail('notification-settings')}
+                  user={user}
+                  onSwitchAccount={handleSwitchAccount}
                />
             )}
             {viewState.type === 'account-security' && <AccountSecurityView user={user} onBack={handleBackNavigation} onSwitchAccount={handleSwitchAccount} />}
@@ -188,9 +214,14 @@ export default function App() {
                />
             )}
             {viewState.type === 'customer-service' && <CustomerServiceView onBack={() => handleTabChange('profile')} />}
-            {viewState.type === 'membership-intro' && <MembershipIntroView onBack={handleBackNavigation} onNavigate={(type) => navigateToDetail(type)} />}
-            {viewState.type === 'membership-payment' && <MembershipPaymentView initialTierId={viewState.tierId} onBack={handleBackNavigation} />}
+            {viewState.type === 'address' && <AddressView user={user} onBack={() => handleTabChange('profile')} />}
+            {viewState.type === 'membership-payment' && <MembershipPaymentView initialTierId={viewState.tierId} onBack={() => handleTabChange('profile')} />}
             {viewState.type === 'certificate' && <GuardianCertificateView onBack={handleBackNavigation} />}
+            {viewState.type === 'exchange-center' && <ExchangeCenterView onBack={handleBackNavigation} />}
+            {viewState.type === 'invite-reward' && <InviteRewardView onBack={handleBackNavigation} />}
+            {viewState.type === 'survey' && <SurveyView onBack={handleBackNavigation} />}
+            {viewState.type === 'coupon' && <CouponView onBack={handleBackNavigation} />}
+            {viewState.type === 'points' && <PointsView onBack={handleBackNavigation} currentPoints={user.points} />}
         </main>
         
         {/* Navigation - Absolute positioning inside relative container */}

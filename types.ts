@@ -87,6 +87,11 @@ export type ViewState =
   | { type: 'notification-settings'; from: 'settings' | 'messages' }
   | { type: 'messages' }
   | { type: 'customer-service' }
-  | { type: 'membership-intro'; from: string }
+  | { type: 'address' }
   | { type: 'membership-payment'; tierId: 'granary' | 'homestead' }
-  | { type: 'certificate' };
+  | { type: 'certificate' }
+  | { type: 'exchange-center' }
+  | { type: 'invite-reward' }
+  | { type: 'survey' }
+  | { type: 'coupon' }
+  | { type: 'points' };

@@ -2,7 +2,7 @@
 import React from 'react';
 import { User, TabType } from '../types';
 import { MOCK_FIELD_NOTES, MONTHLY_RICE_DATA } from '../constants';
-import { Wind, Droplets, ArrowUpRight, Leaf, CloudSun, Calendar, Utensils, Sun, Sparkles, Video, ScanLine } from 'lucide-react';
+import { Wind, Droplets, ArrowUpRight, Leaf, CloudSun, Calendar, Utensils, Sun, Sparkles, Video, ScanLine, Crown, ChevronRight } from 'lucide-react';
 import { BrandLogo, TerracePattern } from '../components/BrandLogo';
 
 interface HomeViewProps {
@@ -30,7 +30,7 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
         </div>
       </div>
 
-      {/* Greeting & Weather Section */}
+      {/* Greeting & Membership Section */}
       <div className="px-6 mt-8 mb-8">
          <div className="flex justify-between items-end">
             <div>
@@ -40,15 +40,31 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
                </h1>
             </div>
             
-            <div className="text-right">
-               <div className="text-4xl font-light text-plough-green-900 font-serif flex items-start justify-end gap-1">
-                 23<span className="text-lg mt-1">°</span>
-               </div>
-               <div className="flex items-center justify-end gap-1 text-stone-400 text-xs mt-1">
-                 <CloudSun size={12} />
-                 <span>多云转晴</span>
-               </div>
-            </div>
+            {/* Membership Center Entry */}
+            {user.level === '未开通权益' ? (
+               <button 
+                  onClick={() => onNavigate('membership-intro')}
+                  className="bg-gradient-to-br from-plough-green-600 to-plough-green-700 text-white px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2"
+               >
+                  <Crown size={16} className="text-[#EBC089]" fill="currentColor" />
+                  <span className="text-sm font-bold">开通会员</span>
+                  <ChevronRight size={14} />
+               </button>
+            ) : (
+               <button 
+                  onClick={() => onNavigate('membership-intro')}
+                  className="relative group"
+               >
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#EBC089] via-[#C99C63] to-[#8C6239] p-0.5 shadow-lg group-hover:scale-110 transition-transform">
+                     <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+                        <Crown size={24} className="text-[#8C6239]" fill="currentColor" />
+                     </div>
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-plough-green-600 rounded-full border-2 border-white flex items-center justify-center">
+                     <ChevronRight size={10} className="text-white" />
+                  </div>
+               </button>
+            )}
          </div>
          {/* Decorative Line */}
          <div className="w-full h-px bg-gradient-to-r from-transparent via-stone-200 to-transparent mt-6 mb-2"></div>

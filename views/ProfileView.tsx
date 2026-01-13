@@ -2,7 +2,6 @@
 import React from 'react';
 import { 
   Headphones, 
-  MessageSquareText, 
   Settings, 
   CreditCard, 
   Package, 
@@ -49,7 +48,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
         {/* Top Bar Layout */}
         <div className="flex justify-between items-center mb-6 relative z-10 pt-4">
            {/* Left: User Avatar & Info */}
-           <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('account-security')}>
+           <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('settings')}>
               {/* Avatar */}
               <div className="relative shrink-0">
                 <div className={`absolute -inset-0.5 rounded-full ${isGuest ? 'bg-stone-500/30' : 'bg-gradient-to-b from-[#EBC089] to-[#8C6239] opacity-80 blur-[0.5px]'}`}></div>
@@ -89,9 +88,8 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
               <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={() => onNavigate('customer-service')}>
                  <Headphones size={20} strokeWidth={1.5} />
               </button>
-              <button className="p-2 hover:bg-white/10 rounded-full transition-colors relative" onClick={() => onNavigate('messages')}>
-                 <MessageSquareText size={20} strokeWidth={1.5} />
-                 <span className="absolute top-2 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full border border-plough-green-950"></span>
+              <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={() => onNavigate('address')}>
+                 <MapPin size={20} strokeWidth={1.5} />
               </button>
               <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={() => onNavigate('settings')}>
                  <Settings size={20} strokeWidth={1.5} />
@@ -104,88 +102,136 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
       <div className="-mt-24 mb-1 relative z-20 overflow-visible">
          <div className="flex overflow-x-auto snap-x snap-mandatory px-5 gap-4 no-scrollbar pb-2">
             
-            {/* Card 1: Premium Black Gold (Active) */}
-            <div 
-               className="min-w-[100%] snap-center h-40 rounded-2xl relative overflow-hidden shadow-xl transform transition-transform cursor-pointer"
-               onClick={() => onNavigate('membership-intro')}
-            >
-               {/* Card Background Gradient */}
-               <div className="absolute inset-0 bg-gradient-to-br from-[#EBC089] via-[#C99C63] to-[#8C6239]"></div>
-               <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-               <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/20 blur-3xl rounded-full"></div>
+            {isGuest ? (
+               /* Guest: Membership Introduction Card */
+               <div 
+                  className="min-w-[100%] snap-center h-40 rounded-2xl relative overflow-hidden shadow-xl transform transition-transform cursor-pointer"
+                  onClick={() => onNavigate('membership-intro')}
+               >
+                  {/* Card Background Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-plough-green-600 via-plough-green-500 to-plough-green-700"></div>
+                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                  <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/20 blur-3xl rounded-full"></div>
 
-               {/* Card Content */}
-               <div className="relative z-10 p-4 h-full flex flex-col justify-between text-[#4A3010]">
-                  {/* Card Header */}
-                  <div className="flex justify-between items-start">
-                     <div className="flex items-center gap-2">
-                        <BrandLogo className="w-5 h-5 text-[#4A3010]" />
-                        <span className="text-[10px] font-bold tracking-widest uppercase opacity-80">Plough Tribe</span>
+                  {/* Card Content */}
+                  <div className="relative z-10 p-4 h-full flex flex-col justify-between text-white">
+                     {/* Card Header */}
+                     <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-2">
+                           <BrandLogo className="w-5 h-5 text-white" />
+                           <span className="text-[10px] font-bold tracking-widest uppercase opacity-90">Plough Tribe</span>
+                        </div>
+                        <span className="bg-white/20 backdrop-blur-md text-[9px] font-bold px-2.5 py-1 rounded-full">
+                           限时优惠
+                        </span>
                      </div>
-                     <button 
-                        className="bg-[#4A3010] text-[#EBC089] text-[9px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm active:opacity-90 active:scale-95 transition-all"
-                        onClick={(e) => { e.stopPropagation(); onNavigate('certificate'); }}
-                     >
-                        <Award size={10} /> 守护证书
-                     </button>
-                  </div>
 
-                  {/* Card Body */}
-                  <div>
-                     <h3 className="text-xl font-serif font-black tracking-wide mb-0.5 flex items-baseline gap-1">
-                        守望·丰仓卡 <span className="text-xs font-normal opacity-80 font-sans">/ 年卡</span>
-                     </h3>
-                     <p className="text-[10px] font-serif opacity-80">卓越会员 · 深度共生</p>
-                  </div>
-
-                  {/* Card Footer */}
-                  <div className="flex justify-between items-end border-t border-[#4A3010]/10 pt-2.5">
+                     {/* Card Body */}
                      <div>
-                        <p className="text-[9px] opacity-70 mb-0.5">有效期至</p>
-                        <p className="text-xs font-bold font-serif numbers">{user.validUntil}</p>
+                        <h3 className="text-xl font-serif font-black tracking-wide mb-1">
+                           开启会员之旅
+                        </h3>
+                        <p className="text-[10px] font-serif opacity-90">每月好米配送 · 专属权益 · 深度体验</p>
                      </div>
-                     <button className="bg-white/20 backdrop-blur-md border border-white/20 text-[10px] font-bold px-3 py-1 rounded-full hover:bg-white/30 transition-colors">
-                        {isGuest ? '立即开通' : '去续费'}
-                     </button>
+
+                     {/* Card Footer */}
+                     <div className="flex justify-between items-end border-t border-white/20 pt-2.5">
+                        <div>
+                           <p className="text-[9px] opacity-80 mb-0.5">首季特惠</p>
+                           <p className="text-xs font-bold font-serif">¥720起<span className="text-[10px] font-normal opacity-80">/季</span></p>
+                        </div>
+                        <button className="bg-white text-plough-green-700 text-[10px] font-bold px-4 py-1.5 rounded-full hover:bg-white/90 transition-colors shadow-sm">
+                           立即开通
+                        </button>
+                     </div>
                   </div>
                </div>
-            </div>
+            ) : (
+               <>
+                  {/* Card 1: Premium Black Gold (Active) */}
+                  <div 
+                     className="min-w-[100%] snap-center h-40 rounded-2xl relative overflow-hidden shadow-xl transform transition-transform cursor-pointer"
+                     onClick={() => onNavigate('membership-intro')}
+                  >
+                     {/* Card Background Gradient */}
+                     <div className="absolute inset-0 bg-gradient-to-br from-[#EBC089] via-[#C99C63] to-[#8C6239]"></div>
+                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                     <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/20 blur-3xl rounded-full"></div>
 
-            {/* Card 2: Standard Green (Inactive/Alternative) */}
-            <div 
-               className="min-w-[100%] snap-center h-40 rounded-2xl relative overflow-hidden shadow-lg bg-[#E8F5E9] border border-plough-green-100 cursor-pointer"
-               onClick={() => onNavigate('membership-intro')}
-            >
-               {/* Decor */}
-               <BrandLogo className="absolute -right-8 -bottom-8 w-40 h-40 text-plough-green-200 opacity-50" />
-               
-               <div className="relative z-10 p-4 h-full flex flex-col justify-between text-plough-green-900">
-                  <div className="flex justify-between items-start">
-                     <div className="flex items-center gap-2">
-                        <BrandLogo className="w-5 h-5" />
-                        <span className="text-[10px] font-bold tracking-widest uppercase opacity-60">Plough Tribe</span>
+                     {/* Card Content */}
+                     <div className="relative z-10 p-4 h-full flex flex-col justify-between text-[#4A3010]">
+                        {/* Card Header */}
+                        <div className="flex justify-between items-start">
+                           <div className="flex items-center gap-2">
+                              <BrandLogo className="w-5 h-5 text-[#4A3010]" />
+                              <span className="text-[10px] font-bold tracking-widest uppercase opacity-80">Plough Tribe</span>
+                           </div>
+                           <button 
+                              className="bg-[#4A3010] text-[#EBC089] text-[9px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm active:opacity-90 active:scale-95 transition-all"
+                              onClick={(e) => { e.stopPropagation(); onNavigate('certificate'); }}
+                           >
+                              <Award size={10} /> 守护证书
+                           </button>
+                        </div>
+
+                        {/* Card Body */}
+                        <div>
+                           <h3 className="text-xl font-serif font-black tracking-wide mb-0.5 flex items-baseline gap-1">
+                              守望·丰仓卡 <span className="text-xs font-normal opacity-80 font-sans">/ 年卡</span>
+                           </h3>
+                           <p className="text-[10px] font-serif opacity-80">卓越会员 · 深度共生</p>
+                        </div>
+
+                        {/* Card Footer */}
+                        <div className="flex justify-between items-end border-t border-[#4A3010]/10 pt-2.5">
+                           <div>
+                              <p className="text-[9px] opacity-70 mb-0.5">有效期至</p>
+                              <p className="text-xs font-bold font-serif numbers">{user.validUntil}</p>
+                           </div>
+                           <button className="bg-white/20 backdrop-blur-md border border-white/20 text-[10px] font-bold px-3 py-1 rounded-full hover:bg-white/30 transition-colors">
+                              去续费
+                           </button>
+                        </div>
                      </div>
-                     <button 
-                        className="bg-plough-green-600 text-white text-[9px] font-bold px-2.5 py-1 rounded-full shadow-sm"
-                        onClick={(e) => { e.stopPropagation(); onNavigate('membership-intro'); }}
-                     >
-                        立即升级
-                     </button>
                   </div>
 
-                  <div>
-                     <h3 className="text-xl font-serif font-black tracking-wide mb-0.5 flex items-baseline gap-1">
-                        归田·家园卡 <span className="text-xs font-normal opacity-80 font-sans">/ 季卡</span>
-                     </h3>
-                     <p className="text-[10px] font-serif opacity-80">基础会员 · 尝鲜体验</p>
-                  </div>
+                  {/* Card 2: Standard Green (Inactive/Alternative) */}
+                  <div 
+                     className="min-w-[100%] snap-center h-40 rounded-2xl relative overflow-hidden shadow-lg bg-[#E8F5E9] border border-plough-green-100 cursor-pointer"
+                     onClick={() => onNavigate('membership-intro')}
+                  >
+                     {/* Decor */}
+                     <BrandLogo className="absolute -right-8 -bottom-8 w-40 h-40 text-plough-green-200 opacity-50" />
+                     
+                     <div className="relative z-10 p-4 h-full flex flex-col justify-between text-plough-green-900">
+                        <div className="flex justify-between items-start">
+                           <div className="flex items-center gap-2">
+                              <BrandLogo className="w-5 h-5" />
+                              <span className="text-[10px] font-bold tracking-widest uppercase opacity-60">Plough Tribe</span>
+                           </div>
+                           <button 
+                              className="bg-plough-green-600 text-white text-[9px] font-bold px-2.5 py-1 rounded-full shadow-sm"
+                              onClick={(e) => { e.stopPropagation(); onNavigate('membership-intro'); }}
+                           >
+                              立即升级
+                           </button>
+                        </div>
 
-                  <div className="flex justify-between items-end border-t border-plough-green-200 pt-2.5">
-                     <p className="text-[10px] opacity-70">享受每月好米配送权益</p>
-                     <span className="text-base font-bold">¥720<span className="text-[10px] font-normal text-stone-500">/季</span></span>
+                        <div>
+                           <h3 className="text-xl font-serif font-black tracking-wide mb-0.5 flex items-baseline gap-1">
+                              归田·家园卡 <span className="text-xs font-normal opacity-80 font-sans">/ 季卡</span>
+                           </h3>
+                           <p className="text-[10px] font-serif opacity-80">基础会员 · 尝鲜体验</p>
+                        </div>
+
+                        <div className="flex justify-between items-end border-t border-plough-green-200 pt-2.5">
+                           <p className="text-[10px] opacity-70">享受每月好米配送权益</p>
+                           <span className="text-base font-bold">¥720<span className="text-[10px] font-normal text-stone-500">/季</span></span>
+                        </div>
+                     </div>
                   </div>
-               </div>
-            </div>
+               </>
+            )}
 
          </div>
       </div>
@@ -197,10 +243,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
             <div className="grid grid-cols-5 gap-1 items-start">
                <ColorIconAction 
                   icon={TicketPercent} 
-                  label="优惠券" 
+                  label="卡券" 
                   value={isGuest ? "0张" : "2张"}
                   color="text-white"
                   bg="bg-gradient-to-br from-orange-400 to-orange-600"
+                  onClick={() => onNavigate('coupon')}
                />
                <ColorIconAction 
                   icon={Wheat} 
@@ -208,28 +255,38 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
                   value={user.points.toString()} 
                   color="text-white"
                   bg="bg-gradient-to-br from-orange-400 to-orange-600"
+                  onClick={() => onNavigate('points')}
                />
                
                {/* Center Exchange Button - Aligned */}
-               <button className="flex flex-col items-center gap-1.5 py-1 relative active:scale-95 transition-transform group">
+               <button 
+                  onClick={() => onNavigate('exchange-center')}
+                  className="flex flex-col items-center gap-1.5 py-1 relative active:scale-95 transition-transform group"
+               >
                   <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 text-white rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
                      <Gem size={20} />
                   </div>
                   <span className="text-xs font-bold text-stone-700">兑换中心</span>
                </button>
 
-               <ColorIconAction 
-                  icon={Gift} 
-                  label="邀请有礼" 
-                  highlight 
-                  color="text-white"
-                  bg="bg-gradient-to-br from-orange-400 to-orange-600"
-               />
+               <button 
+                  onClick={() => onNavigate('invite-reward')}
+                  className="flex flex-col items-center gap-1.5 py-1 relative active:scale-95 transition-transform group"
+               >
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center transition-transform group-hover:scale-110 shadow-sm relative">
+                     <Gift size={20} className="text-white" strokeWidth={2} />
+                     <span className="absolute -top-1.5 -right-1 text-[8px] bg-red-500 text-white px-1.5 py-0.5 rounded-full shadow-sm scale-90 border border-white">
+                        有礼
+                     </span>
+                  </div>
+                  <span className="text-xs text-stone-700 font-bold">邀请有礼</span>
+               </button>
                <ColorIconAction 
                   icon={ClipboardCheck} 
                   label="用户调研" 
                   color="text-white"
                   bg="bg-gradient-to-br from-orange-400 to-orange-600"
+                  onClick={() => onNavigate('survey')}
                />
             </div>
          </div>
@@ -255,10 +312,10 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
          <div className="bg-white rounded-xl p-4 shadow-sm">
             <div className="grid grid-cols-5 gap-2">
                <IconAction icon={ShoppingCart} label="购物车" />
-               <IconAction icon={MapPin} label="我的地址" />
                <IconAction icon={Star} label="收藏" />
                <IconAction icon={FileText} label="发票" />
-               <IconAction icon={Info} label="关于" />
+               <IconAction icon={MapPin} label="我的地址" onClick={() => onNavigate('address')} />
+               <IconAction icon={Headphones} label="客服" onClick={() => onNavigate('customer-service')} />
             </div>
          </div>
 
@@ -320,8 +377,8 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onNavigate }) => {
 };
 
 // --- Sub Component: Standard Icon Action ---
-const IconAction: React.FC<{ icon: any, label: string, badge?: string, value?: string }> = ({ icon: Icon, label, badge, value }) => (
-   <button className="flex flex-col items-center gap-1.5 py-1 relative active:scale-95 transition-transform">
+const IconAction: React.FC<{ icon: any, label: string, badge?: string, value?: string, onClick?: () => void }> = ({ icon: Icon, label, badge, value, onClick }) => (
+   <button onClick={onClick} className="flex flex-col items-center gap-1.5 py-1 relative active:scale-95 transition-transform">
       <div className="relative">
          <Icon size={24} className="text-stone-600" strokeWidth={1.5} />
          {badge && (
@@ -336,8 +393,8 @@ const IconAction: React.FC<{ icon: any, label: string, badge?: string, value?: s
 );
 
 // --- Sub Component: Colorful Icon Action ---
-const ColorIconAction: React.FC<{ icon: any, label: string, value?: string, highlight?: boolean, color: string, bg: string }> = ({ icon: Icon, label, value, highlight, color, bg }) => (
-   <button className="flex flex-col items-center gap-1.5 py-1 relative active:scale-95 transition-transform group">
+const ColorIconAction: React.FC<{ icon: any, label: string, value?: string, highlight?: boolean, color: string, bg: string, onClick?: () => void }> = ({ icon: Icon, label, value, highlight, color, bg, onClick }) => (
+   <button onClick={onClick} className="flex flex-col items-center gap-1.5 py-1 relative active:scale-95 transition-transform group">
       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center transition-transform group-hover:scale-110 shadow-sm">
          <Icon size={20} className="text-white" strokeWidth={2} />
          {highlight && (
