@@ -157,44 +157,6 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
                   </div>
                ))}
             </div>
-
-            {/* 左右切换按钮（仅当有多张图片时显示） */}
-            {activeImages.length > 1 && (
-               <>
-                  <button
-                     onClick={goToPrevious}
-                     className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-stone-700 hover:bg-white transition-all shadow-md z-10"
-                     aria-label="上一张"
-                  >
-                     <ChevronLeft size={20} strokeWidth={2} />
-                  </button>
-                  <button
-                     onClick={goToNext}
-                     className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-stone-700 hover:bg-white transition-all shadow-md z-10"
-                     aria-label="下一张"
-                  >
-                     <ChevronRight size={20} strokeWidth={2} />
-                  </button>
-               </>
-            )}
-
-            {/* 指示器（仅当有多张图片时显示） */}
-            {activeImages.length > 1 && (
-               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                  {activeImages.map((_, index) => (
-                     <button
-                        key={index}
-                        onClick={() => goToSlide(index)}
-                        className={`w-2 h-2 rounded-full transition-all ${
-                           index === currentBannerIndex 
-                              ? 'bg-white w-6' 
-                              : 'bg-white/50 hover:bg-white/75'
-                        }`}
-                        aria-label={`切换到第 ${index + 1} 张`}
-                     />
-                  ))}
-               </div>
-            )}
          </div>
       </div>
 
