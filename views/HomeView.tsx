@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, TabType } from '../types';
 import { MOCK_FIELD_NOTES, MONTHLY_RICE_DATA } from '../constants';
-import { Wind, Droplets, ArrowUpRight, Leaf, CloudSun, Calendar, Utensils, Sun, Sparkles, Video, ScanLine, Crown, ChevronRight, MapPin, Thermometer } from 'lucide-react';
+import { Wind, Droplets, ArrowUpRight, Leaf, CloudSun, Calendar, Utensils, Sun, Sparkles, Video, ScanLine, Crown, ChevronRight, MapPin, Thermometer, ChevronLeft } from 'lucide-react';
 import { BrandLogo, TerracePattern } from '../components/BrandLogo';
 
 interface HomeViewProps {
@@ -12,6 +12,72 @@ interface HomeViewProps {
 }
 
 const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) => {
+  // 轮播图配置 - 图片路径数组
+  const bannerImages = [
+    '/home-banner-1.jpg',
+    '/home-banner-2.jpg',
+    '/home-banner-3.jpg'
+  ].filter(img => {
+    // 检查图片是否存在（通过尝试加载）
+    return true; // 默认显示所有，如果图片不存在会显示占位
+  });
+
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [bannerImagesLoaded, setBannerImagesLoaded] = useState<string[]>([]);
+  const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
+
+  // 自动轮播 - Banner图
+  useEffect(() => {
+    if (bannerImages.length <= 1) return;
+    
+    const timer = setInterval(() => {
+      setCurrentBannerIndex((prev) => (prev + 1) % bannerImages.length);
+    }, 5000); // 每5秒切换一次
+
+    return () => clearInterval(timer);
+  }, [bannerImages.length]);
+
+  // 自动轮播 - 文章轮播图
+  useEffect(() => {
+    if (MOCK_FIELD_NOTES.length <= 1) return;
+    
+    const timer = setInterval(() => {
+      setCurrentArticleIndex((prev) => (prev + 1) % MOCK_FIELD_NOTES.length);
+    }, 5000); // 每5秒切换一次
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // 检查图片是否加载成功
+  const handleImageLoad = (src: string) => {
+    if (!bannerImagesLoaded.includes(src)) {
+      setBannerImagesLoaded([...bannerImagesLoaded, src]);
+    }
+  };
+
+  const handleImageError = (src: string) => {
+    // 图片加载失败时，从数组中移除
+    setBannerImagesLoaded(bannerImagesLoaded.filter(img => img !== src));
+  };
+
+  // 切换到上一张
+  const goToPrevious = () => {
+    setCurrentBannerIndex((prev) => (prev - 1 + bannerImages.length) % bannerImages.length);
+  };
+
+  // 切换到下一张
+  const goToNext = () => {
+    setCurrentBannerIndex((prev) => (prev + 1) % bannerImages.length);
+  };
+
+  // 跳转到指定索引
+  const goToSlide = (index: number) => {
+    setCurrentBannerIndex(index);
+  };
+
+  // 实际可用的图片（至少显示一张占位图）
+  const activeImages = bannerImages.length > 0 ? bannerImages : ['/home-banner-1.jpg'];
+
   return (
     <div className="pb-32 animate-fade-in bg-[#FDFCF8] min-h-screen relative overflow-hidden">
       {/* Background Decor */}
@@ -32,64 +98,221 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
 
       {/* Greeting Section */}
       <div className="px-6 mt-6 mb-6">
-         <div>
-            <p className="text-xs text-stone-400 font-serif italic mb-1.5">Dec 26 · 立夏</p>
-            <h1 className="text-xl font-serif font-bold text-stone-900 leading-tight">
-              早安，{user.name}
-            </h1>
-         </div>
-      </div>
-
-      {/* Promotional Poster - 牛耕部落介绍海报 */}
-      <div className="w-full mb-6">
-         <div 
-            className="w-full bg-cover bg-center"
-            style={{
-               aspectRatio: '1/1',
-               backgroundImage: 'url(https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=1200)',
-               backgroundPosition: 'center'
-            }}
-         >
-            {/* 渐变遮罩 */}
-            <div className="w-full h-full bg-gradient-to-b from-black/40 via-black/20 to-transparent flex flex-col justify-end p-6">
-               <div className="text-white">
-                  <h3 className="text-lg font-serif font-bold mb-2">牛耕部落</h3>
-                  <p className="text-xs text-white/90 leading-relaxed font-serif">
-                     完整保存并复兴"牛耕+稻鱼鸭共生"系统<br/>
-                     遵循德米特(Demeter)有机标准<br/>
-                     守护千年梯田智慧
-                  </p>
+         <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+               <p className="text-xs text-stone-400 font-serif italic mb-1.5">Dec 26 · 立夏</p>
+               <h1 className="text-xl font-serif font-bold text-stone-900 leading-tight">
+                 早安，{user.name}
+               </h1>
+            </div>
+            
+            {/* 地理位置、气温、空气湿度 - 放在问候语右侧 */}
+            <div className="flex flex-col gap-2 shrink-0">
+               {/* 第一行：位置图标 + 贵州黎平 */}
+               <div className="flex items-center gap-1.5">
+                  <MapPin size={14} className="text-stone-600" strokeWidth={2} />
+                  <span className="text-xs text-stone-700 font-serif">贵州黎平</span>
+               </div>
+               
+               {/* 第二行：气温 + 空气湿度 */}
+               <div className="flex items-center gap-3">
+                  {/* 气温 */}
+                  <div className="flex items-center gap-1.5">
+                     <Thermometer size={16} className="text-orange-600" strokeWidth={2} />
+                     <span className="text-sm font-serif font-bold text-stone-900">22°C</span>
+                  </div>
+                  
+                  {/* 空气湿度 */}
+                  <div className="flex items-center gap-1.5">
+                     <Droplets size={16} className="text-cyan-600" strokeWidth={2} />
+                     <span className="text-sm font-serif font-bold text-stone-900">65%</span>
+                  </div>
                </div>
             </div>
          </div>
       </div>
 
-      {/* Section 1: Field Notes (田野手记) */}
-      <div className="mb-10">
-         <div className="flex overflow-x-auto px-6 gap-4 pb-4 no-scrollbar snap-x snap-mandatory">
-            {MOCK_FIELD_NOTES.slice(0, 2).map((note, index) => (
-               <div 
-                 key={note.id} 
-                 onClick={() => onNavigate('note-detail', note.id)} 
-                 className="min-w-[70%] snap-center cursor-pointer group"
-               >
-                  <div className="aspect-square rounded-[2rem] overflow-hidden relative shadow-md mb-3">
-                     <img src={note.image} alt={note.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                     <div className="absolute top-4 left-4">
-                        <span className="bg-white/90 backdrop-blur-md text-stone-800 text-[10px] px-3 py-1 rounded-full font-serif font-bold shadow-sm">
-                           {index === 0 ? '谷雨 · 新茶' : '秧苗认养计划'}
-                        </span>
-                     </div>
+      {/* Promotional Poster - 牛耕部落介绍海报（轮播图） */}
+      <div className="w-full mb-6">
+         {/* 轮播图区域 - 全宽显示，3:2比例 */}
+         <div className="relative w-full overflow-hidden" style={{ aspectRatio: '3/2' }}>
+            {/* 轮播图片容器 */}
+            <div 
+               className="flex transition-transform duration-500 ease-in-out h-full"
+               style={{ transform: `translateX(-${currentBannerIndex * 100}%)` }}
+            >
+               {activeImages.map((imgSrc, index) => (
+                  <div 
+                     key={index}
+                     className="w-full h-full flex-shrink-0 relative flex items-center justify-center"
+                     style={{ aspectRatio: '3/2' }}
+                  >
+                     <img 
+                        src={imgSrc}
+                        alt={`牛耕部落海报 ${index + 1}`}
+                        className="w-full h-full object-contain"
+                        onLoad={() => handleImageLoad(imgSrc)}
+                        onError={() => handleImageError(imgSrc)}
+                     />
                   </div>
-                  <div>
-                     <div className="flex justify-between items-baseline">
-                        <h3 className="text-base font-serif font-bold text-stone-900 line-clamp-1">{note.title}</h3>
-                        <span className="text-[10px] text-plough-green-700 font-bold">{note.date}</span>
-                     </div>
-                     <p className="text-xs text-stone-400 font-light mt-0.5 line-clamp-1">{note.subtitle}</p>
-                  </div>
+               ))}
+            </div>
+
+            {/* 左右切换按钮（仅当有多张图片时显示） */}
+            {activeImages.length > 1 && (
+               <>
+                  <button
+                     onClick={goToPrevious}
+                     className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-stone-700 hover:bg-white transition-all shadow-md z-10"
+                     aria-label="上一张"
+                  >
+                     <ChevronLeft size={20} strokeWidth={2} />
+                  </button>
+                  <button
+                     onClick={goToNext}
+                     className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-stone-700 hover:bg-white transition-all shadow-md z-10"
+                     aria-label="下一张"
+                  >
+                     <ChevronRight size={20} strokeWidth={2} />
+                  </button>
+               </>
+            )}
+
+            {/* 指示器（仅当有多张图片时显示） */}
+            {activeImages.length > 1 && (
+               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                  {activeImages.map((_, index) => (
+                     <button
+                        key={index}
+                        onClick={() => goToSlide(index)}
+                        className={`w-2 h-2 rounded-full transition-all ${
+                           index === currentBannerIndex 
+                              ? 'bg-white w-6' 
+                              : 'bg-white/50 hover:bg-white/75'
+                        }`}
+                        aria-label={`切换到第 ${index + 1} 张`}
+                     />
+                  ))}
                </div>
-            ))}
+            )}
+         </div>
+
+         {/* 文字内容区域 - 放在图片下方 */}
+         <div className="px-6 pt-6">
+            <div className="text-stone-900">
+               <p className="text-sm leading-relaxed font-serif mb-4">
+                  这里是贵州黎平洋洞村，一个被时光遗忘的角落。
+               </p>
+               <p className="text-sm leading-relaxed font-serif mb-4">
+                  当外面的世界都在追求机器的轰鸣与化肥的"高效"时，"有牛哥"杨正熙 却带着村民固执地守着老祖宗留下的笨办法。
+               </p>
+               <p className="text-sm leading-relaxed font-serif mb-4">
+                  拒绝一粒化肥，拒绝一滴农药，拒绝除草剂。
+               </p>
+               <p className="text-sm leading-relaxed font-serif mb-4">
+                  我们用牛耕地，用鸭吃虫，用鱼肥田。
+               </p>
+               <p className="text-sm leading-relaxed font-serif mb-4">
+                  我们在梯田里建立了"活体基因库"，抢救了93种 濒临灭绝的水稻老种子。
+               </p>
+               <p className="text-sm leading-relaxed font-serif mb-4">
+                  每一口有牛米，都是人与自然和解的味道。
+               </p>
+               <p className="text-sm leading-relaxed font-serif font-bold text-plough-green-800">
+                  欢迎回家，守护人。
+               </p>
+            </div>
+         </div>
+      </div>
+
+      {/* Section 1: Field Notes (田野手记) - 轮播图 */}
+      <div className="mb-10">
+         <div className="px-6 relative">
+            {/* 轮播图容器 */}
+            <div className="relative overflow-hidden rounded-[2rem] shadow-md">
+               <div 
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{ transform: `translateX(-${currentArticleIndex * 100}%)` }}
+               >
+                  {MOCK_FIELD_NOTES.map((note, index) => (
+                     <div 
+                        key={note.id}
+                        className="w-full flex-shrink-0 relative cursor-pointer group"
+                        onClick={() => onNavigate('note-detail', note.id)}
+                        style={{ aspectRatio: '16/9' }}
+                     >
+                        <img 
+                           src={note.image} 
+                           alt={note.title} 
+                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                        />
+                        {/* 标签 */}
+                        <div className="absolute top-4 left-4">
+                           <span className="bg-white/90 backdrop-blur-md text-stone-800 text-[10px] px-3 py-1 rounded-full font-serif font-bold shadow-sm">
+                              {note.category}
+                           </span>
+                        </div>
+                        {/* 文字信息覆盖层 */}
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-6">
+                           <div className="flex justify-between items-end">
+                              <div className="flex-1">
+                                 <h3 className="text-base font-serif font-bold text-white mb-1 line-clamp-1">{note.title}</h3>
+                                 <p className="text-xs text-white/90 font-light line-clamp-1">{note.subtitle}</p>
+                              </div>
+                              <span className="text-[10px] text-white/80 font-bold ml-4">{note.date}</span>
+                           </div>
+                        </div>
+                     </div>
+                  ))}
+               </div>
+
+               {/* 左右切换按钮（仅当有多张图片时显示） */}
+               {MOCK_FIELD_NOTES.length > 1 && (
+                  <>
+                     <button
+                        onClick={(e) => {
+                           e.stopPropagation();
+                           setCurrentArticleIndex((prev) => (prev - 1 + MOCK_FIELD_NOTES.length) % MOCK_FIELD_NOTES.length);
+                        }}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-stone-700 hover:bg-white transition-all shadow-md z-10"
+                        aria-label="上一张"
+                     >
+                        <ChevronLeft size={20} strokeWidth={2} />
+                     </button>
+                     <button
+                        onClick={(e) => {
+                           e.stopPropagation();
+                           setCurrentArticleIndex((prev) => (prev + 1) % MOCK_FIELD_NOTES.length);
+                        }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-stone-700 hover:bg-white transition-all shadow-md z-10"
+                        aria-label="下一张"
+                     >
+                        <ChevronRight size={20} strokeWidth={2} />
+                     </button>
+                  </>
+               )}
+
+               {/* 指示器（仅当有多张图片时显示） */}
+               {MOCK_FIELD_NOTES.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                     {MOCK_FIELD_NOTES.map((_, index) => (
+                        <button
+                           key={index}
+                           onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentArticleIndex(index);
+                           }}
+                           className={`w-2 h-2 rounded-full transition-all ${
+                              index === currentArticleIndex 
+                                 ? 'bg-white w-6' 
+                                 : 'bg-white/50 hover:bg-white/75'
+                           }`}
+                           aria-label={`切换到第 ${index + 1} 张`}
+                        />
+                     ))}
+                  </div>
+               )}
+            </div>
          </div>
       </div>
 
@@ -134,49 +357,6 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
          </div>
       </div>
 
-      {/* Section 3: Farm Status Card (农场实况卡片) */}
-      <div className="px-6 mb-6">
-         <div className="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm">
-            {/* 数据网格 */}
-            <div className="grid grid-cols-2 gap-4">
-               {/* 地理位置 */}
-               <div className="flex items-center gap-3">
-                  <MapPin size={24} className="text-plough-green-700" strokeWidth={1.5} />
-                  <div>
-                     <p className="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">地理位置</p>
-                     <p className="text-base font-serif font-bold text-stone-900">贵州黎平</p>
-                  </div>
-               </div>
-
-               {/* 气温 */}
-               <div className="flex items-center gap-3">
-                  <Thermometer size={24} className="text-orange-600" strokeWidth={1.5} />
-                  <div>
-                     <p className="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">气温</p>
-                     <p className="text-base font-serif font-bold text-stone-900">22°C</p>
-                  </div>
-               </div>
-
-               {/* 空气质量 */}
-               <div className="flex items-center gap-3">
-                  <Wind size={24} className="text-blue-600" strokeWidth={1.5} />
-                  <div>
-                     <p className="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">空气质量 (AQI)</p>
-                     <p className="text-base font-serif font-bold text-stone-900">优</p>
-                  </div>
-               </div>
-
-               {/* 湿度 */}
-               <div className="flex items-center gap-3">
-                  <Droplets size={24} className="text-cyan-600" strokeWidth={1.5} />
-                  <div>
-                     <p className="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">相对湿度</p>
-                     <p className="text-base font-serif font-bold text-stone-900">65%</p>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
 
       {/* Section 4: Twelve Months Rice (十二月令米) */}
       <div className="mb-10">

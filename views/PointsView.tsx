@@ -459,3 +459,6 @@ const PointsView: React.FC<PointsViewProps> = ({ onBack, currentPoints }) => {
 export default PointsView;
 
 
+
+
+

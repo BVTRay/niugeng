@@ -42,7 +42,7 @@ export const MOCK_FIELD_NOTES: FieldNote[] = [
     id: 1, 
     title: "秧苗生长记录：第七周", 
     subtitle: "这周雨水充足，长势喜人", 
-    image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=800", 
+    image: "/article-1.jpg", 
     category: "农事",
     date: "04.20",
     author: "农场主 · 阿土",
@@ -56,7 +56,7 @@ export const MOCK_FIELD_NOTES: FieldNote[] = [
     id: 2, 
     title: "谷雨 · 新茶上市", 
     subtitle: "高山云雾初采，滋味鲜爽", 
-    image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&q=80&w=800", 
+    image: "/article-2.jpg", 
     category: "新品",
     date: "04.18",
     author: "茶师 · 老陈",
@@ -69,13 +69,26 @@ export const MOCK_FIELD_NOTES: FieldNote[] = [
     id: 3, 
     title: "春日手剥鲜笋食谱", 
     subtitle: "不时不食，鲜嫩爽口", 
-    image: "https://images.unsplash.com/photo-1615484477778-ca3b77940c25?auto=format&fit=crop&q=80&w=800", 
+    image: "/article-3.jpg", 
     category: "食谱",
     date: "04.15",
     author: "膳房 · 李阿姨",
     content: [
       "一场春雨过后，后山的竹笋便争先恐后地冒了出来。这时候的雷笋，肉质最为细嫩，没有一丝渣滓。我们只选用清晨刚挖出来的鲜笋，带着泥土的芬芳。",
       "这道油焖笋，做法看似简单，却最考究火候。剥壳后的笋切成滚刀块，先在热油中煸炒至边缘金黄，再加入土冰糖和酿造酱油焖煮。不加一滴水，全靠笋自身的水分和调料融合。"
+    ]
+  },
+  { 
+    id: 4, 
+    title: "梯田四季风光", 
+    subtitle: "春夏秋冬，四季如画", 
+    image: "/article-4.jpg", 
+    category: "风光",
+    date: "04.10",
+    author: "摄影师 · 小张",
+    content: [
+      "梯田四季变换，每个季节都有独特的风景。春天，秧苗初插，一片新绿；夏天，稻浪翻滚，满目金黄；秋天，收获时节，硕果累累；冬天，休养生息，蓄势待发。",
+      "我们用镜头记录下每一个美好的瞬间，让更多人看到梯田的美丽，感受农耕文化的魅力。"
     ]
   }
 ];

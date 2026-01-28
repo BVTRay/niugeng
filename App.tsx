@@ -181,7 +181,7 @@ export default function App() {
               <>
                 {viewState.tab === 'home' && <HomeView user={user} setActiveTab={handleTabChange} onNavigate={navigateToDetail} />}
                 {viewState.tab === 'market' && <MarketView onNavigate={navigateToDetail} />}
-                {viewState.tab === 'letter' && <MembershipPaymentView initialTierId="homestead" onBack={() => {}} isTabView={true} />}
+                {viewState.tab === 'letter' && <MembershipPaymentView initialTierId="homestead" onBack={() => {}} isTabView={true} onNavigateToService={() => navigateToDetail('customer-service')} />}
                 {viewState.tab === 'homestay' && <HomestayView onNavigate={navigateToDetail} />}
                 {viewState.tab === 'profile' && <ProfileView user={user} onNavigate={navigateToDetail} />}
               </>
@@ -215,7 +215,7 @@ export default function App() {
             )}
             {viewState.type === 'customer-service' && <CustomerServiceView onBack={() => handleTabChange('profile')} />}
             {viewState.type === 'address' && <AddressView user={user} onBack={() => handleTabChange('profile')} />}
-            {viewState.type === 'membership-payment' && <MembershipPaymentView initialTierId={viewState.tierId} onBack={() => handleTabChange('profile')} />}
+            {viewState.type === 'membership-payment' && <MembershipPaymentView initialTierId={viewState.tierId} onBack={() => handleTabChange('profile')} onNavigateToService={() => navigateToDetail('customer-service')} />}
             {viewState.type === 'certificate' && <GuardianCertificateView onBack={handleBackNavigation} />}
             {viewState.type === 'exchange-center' && <ExchangeCenterView onBack={handleBackNavigation} />}
             {viewState.type === 'invite-reward' && <InviteRewardView onBack={handleBackNavigation} />}
