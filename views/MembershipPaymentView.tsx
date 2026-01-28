@@ -166,12 +166,12 @@ const MembershipPaymentView: React.FC<MembershipPaymentViewProps> = ({
           
           {/* 一、头部头图 */}
           <div className="relative w-full mb-0">
-            <div className="relative w-full">
+            <div className="relative w-full" style={{ aspectRatio: '3/1' }}>
               {/* 头图背景图片 */}
               <img 
                 src="/header-banner.jpg" 
                 alt="2026守护人计划" 
-                className="w-full h-auto object-contain"
+                className="w-full h-full object-cover"
                 onError={(e) => {
                   // 如果图片加载失败，显示渐变背景作为后备
                   const target = e.target as HTMLImageElement;

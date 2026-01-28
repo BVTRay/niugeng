@@ -181,12 +181,6 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
                            alt={note.title} 
                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                         />
-                        {/* 标签 */}
-                        <div className="absolute top-4 left-4">
-                           <span className="bg-white/90 backdrop-blur-md text-stone-800 text-[10px] px-3 py-1 rounded-full font-serif font-bold shadow-sm">
-                              {note.category}
-                           </span>
-                        </div>
                         {/* 文字信息覆盖层 */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-6">
                            <div className="flex justify-between items-end">
@@ -200,32 +194,6 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
                      </div>
                   ))}
                </div>
-
-               {/* 左右切换按钮（仅当有多张图片时显示） */}
-               {MOCK_FIELD_NOTES.length > 1 && (
-                  <>
-                     <button
-                        onClick={(e) => {
-                           e.stopPropagation();
-                           setCurrentArticleIndex((prev) => (prev - 1 + MOCK_FIELD_NOTES.length) % MOCK_FIELD_NOTES.length);
-                        }}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-stone-700 hover:bg-white transition-all shadow-md z-10"
-                        aria-label="上一张"
-                     >
-                        <ChevronLeft size={20} strokeWidth={2} />
-                     </button>
-                     <button
-                        onClick={(e) => {
-                           e.stopPropagation();
-                           setCurrentArticleIndex((prev) => (prev + 1) % MOCK_FIELD_NOTES.length);
-                        }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-stone-700 hover:bg-white transition-all shadow-md z-10"
-                        aria-label="下一张"
-                     >
-                        <ChevronRight size={20} strokeWidth={2} />
-                     </button>
-                  </>
-               )}
 
                {/* 指示器（仅当有多张图片时显示） */}
                {MOCK_FIELD_NOTES.length > 1 && (
