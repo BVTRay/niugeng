@@ -134,8 +134,8 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
 
       {/* Promotional Poster - 牛耕部落介绍海报（轮播图） */}
       <div className="w-full mb-6">
-         {/* 轮播图区域 - 全宽显示，3:2比例 */}
-         <div className="relative w-full overflow-hidden" style={{ aspectRatio: '3/2' }}>
+         {/* 轮播图区域 - 全宽显示，1:1正方形比例 */}
+         <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
             {/* 轮播图片容器 */}
             <div 
                className="flex transition-transform duration-500 ease-in-out h-full"
@@ -145,7 +145,7 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
                   <div 
                      key={index}
                      className="w-full h-full flex-shrink-0 relative flex items-center justify-center"
-                     style={{ aspectRatio: '3/2' }}
+                     style={{ aspectRatio: '1/1' }}
                   >
                      <img 
                         src={imgSrc}
@@ -195,33 +195,6 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
                   ))}
                </div>
             )}
-         </div>
-
-         {/* 文字内容区域 - 放在图片下方 */}
-         <div className="px-6 pt-6">
-            <div className="text-stone-900">
-               <p className="text-sm leading-relaxed font-serif mb-4">
-                  这里是贵州黎平洋洞村，一个被时光遗忘的角落。
-               </p>
-               <p className="text-sm leading-relaxed font-serif mb-4">
-                  当外面的世界都在追求机器的轰鸣与化肥的"高效"时，"有牛哥"杨正熙 却带着村民固执地守着老祖宗留下的笨办法。
-               </p>
-               <p className="text-sm leading-relaxed font-serif mb-4">
-                  拒绝一粒化肥，拒绝一滴农药，拒绝除草剂。
-               </p>
-               <p className="text-sm leading-relaxed font-serif mb-4">
-                  我们用牛耕地，用鸭吃虫，用鱼肥田。
-               </p>
-               <p className="text-sm leading-relaxed font-serif mb-4">
-                  我们在梯田里建立了"活体基因库"，抢救了93种 濒临灭绝的水稻老种子。
-               </p>
-               <p className="text-sm leading-relaxed font-serif mb-4">
-                  每一口有牛米，都是人与自然和解的味道。
-               </p>
-               <p className="text-sm leading-relaxed font-serif font-bold text-plough-green-800">
-                  欢迎回家，守护人。
-               </p>
-            </div>
          </div>
       </div>
 
