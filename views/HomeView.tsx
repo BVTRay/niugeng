@@ -86,13 +86,11 @@ const HomeView: React.FC<HomeViewProps> = ({ user, setActiveTab, onNavigate }) =
       {/* Header: Brand Only (Avatar Removed) */}
       <div className="px-6 pt-6 flex justify-between items-start">
         <div className="flex flex-col gap-1">
-           <div className="flex items-center gap-3 text-plough-green-900">
-              <BrandLogo className="w-10 h-10" />
-              <div className="flex flex-col -space-y-0.5 pt-1">
-                <span className="text-xl font-serif font-black leading-none tracking-wide" style={{ fontFamily: '"Noto Serif SC", serif' }}>牛耕部落</span>
-                <span className="text-[9px] font-sans font-medium tracking-[0.2em] text-plough-green-800 uppercase scale-90 origin-left">The Plough Tribe</span>
-              </div>
-           </div>
+           <img 
+             src="/logo.png" 
+             alt="牛耕部落" 
+             className="h-12 w-auto object-contain"
+           />
         </div>
       </div>
 
